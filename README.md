@@ -1,0 +1,2 @@
+# mymacvim
+vim配置
