@@ -2,7 +2,7 @@
 " Description: An ack/ag powered code search and view tool.
 " Author: Ye Ding <dygvirus@gmail.com>
 " Licence: Vim licence
-" Version: 1.10
+" Version: 1.40
 " ============================================================================
 
 " Loading Guard {{{1
@@ -124,15 +124,17 @@ endif
 
 " g:ctrlsf_mapping {{{
 let s:default_mapping = {
-    \ "open"  : "<CR>",
-    \ "openb" : "O",
-    \ "tab"   : "t",
-    \ "tabb"  : "T",
-    \ "prevw" : "p",
-    \ "quit"  : "q",
-    \ "next"  : "<C-J>",
-    \ "prev"  : "<C-K>",
-    \ "pquit" : "q",
+    \ "open"    : ["<CR>", "o"],
+    \ "openb"   : "O",
+    \ "split"   : "<C-O>",
+    \ "tab"     : "t",
+    \ "tabb"    : "T",
+    \ "popen"   : "p",
+    \ "quit"    : "q",
+    \ "next"    : "<C-J>",
+    \ "prev"    : "<C-K>",
+    \ "pquit"   : "q",
+    \ "loclist" : "",
     \ }
 
 if !exists('g:ctrlsf_mapping')
@@ -142,6 +144,12 @@ else
         let g:ctrlsf_mapping[key] = get(g:ctrlsf_mapping, key,
             \ s:default_mapping[key])
     endfo
+endif
+" }}}
+
+" g:ctrlsf_populate_qflist {{{
+if !exists('g:ctrlsf_populate_qflist')
+    let g:ctrlsf_populate_qflist = 0
 endif
 " }}}
 

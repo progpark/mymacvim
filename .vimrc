@@ -1,80 +1,85 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                     Vim 环境下快捷键说明                     "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" F1  ：快速显示桌面                                           "
+" F2  ：快速显示Dashboard                                      "
+" F3  ：快速切换Nerdtree的开启状态，默认开启                   "
+" F4  ：快速切换Tagbar的开启状态，默认关闭                     "
+" F5  ：快速切换indentLine对齐线的开启撞他，默认开启           "
+" F6  ：快速查看Git修改状态，默认关闭                          "
+" F7  ：                                                       "
+" F8  ：                                                       "
+" F9  ：                                                       "
+" F10 ：                                                       "
+" F11 ：快速向左切换buffer，并在当前窗口打开buffer             "
+" F12 ：快速向右切换buffer，并在当前窗口打开buffer             "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vundle 方式管理插件
 " => https://github.com/gmarik/Vundle.vim#about
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-filetype off                  " required
+filetype off                  " required"
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle, required
-Bundle 'gmarik/Vundle.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'terryma/vim-multiple-cursors'
-Bundle 'mileszs/ack.vim'
-Bundle 'bling/vim-airline'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'Raimondi/delimitMate'
-Bundle 'anyakichi/vim-surround'
-Bundle 'ShowTrailingWhitespace'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'Yggdroot/indentLine'
-Bundle 'gregsexton/gitv'
-Bundle 'tpope/vim-commentary'
+Plugin 'gmarik/Vundle.vim'                            " Vim插件管理包，必须
+Plugin 'altercation/vim-colors-solarized'             " Vim配色方案
+Plugin 'tomasr/molokai'                               " Vim配色方案
+Plugin 'scrooloose/nerdtree'                          " 左侧导航目录树
+Plugin 'majutsushi/tagbar'                            " 右侧标签目录树
+Plugin 'bling/vim-airline'                            " 用于配置美观的底部状态栏
+Plugin 'Yggdroot/indentLine'                          " 更加美观的显示缩进对齐线
+Plugin 'terryma/vim-multiple-cursors'                 " Vim支持多重选取并编辑内容:Ctrl+n
+Plugin 'rking/ag.vim'                                 " 内容搜索
+Plugin 'mileszs/ack.vim'                              " 内容搜索
+Plugin 'Raimondi/delimitMate'                         " 用于补全括号和引号
+Plugin 'anyakichi/vim-surround'                       " 用于快速切换括号/引号或者标签
+Plugin 'ShowTrailingWhitespace'                       " 用于高亮显示行尾空格
+Plugin 'tpope/vim-fugitive'                           " 将Git集成在Vim中
+Plugin 'airblade/vim-gitgutter'                       " 实时显示git更改
+Plugin 'gregsexton/gitv'                              " 查看Git详细提交日志(类似gitk)
+Plugin 'tpope/vim-commentary'                         " Vim批量注释工具, 可以注释多行和去除多行注释
+Plugin 'mattn/emmet-vim'                              " 用于更加方便的编辑html和css代码
+Plugin 'kien/ctrlp.vim'                               " 文件快速搜索插件
+Plugin 'dyng/ctrlsf.vim'                              " 仿Sublime的全局搜索插件
+Plugin 'Valloric/YouCompleteMe'                       " 代码自动补全
+Plugin 'msanders/snipmate.vim'                        " 代码自动完成
+Plugin 'drmingdrmer/xptemplate'                       " 强大的代码片段自动补全
+Plugin 'godlygeek/tabular'                            " 必须在vim-markdow前加载
+Plugin 'plasticboy/vim-markdown'                      " 设置markdown语法高亮
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'scrooloose/syntastic'                         " 语法检查
+Plugin 'stephpy/vim-php-cs-fixer'                     " 支持PSR的PHP代码格式化插件
+Plugin 'edsono/vim-matchit'                           " 匹配成对的标签，跳转
+Plugin 'easymotion/vim-easymotion'                    " 跳转到光标后任意位置
+Plugin 'sjl/gundo.vim'                                " 编辑文件时光机
+Plugin 'leshill/vim-json'
+Plugin 'mattn/webapi-vim'
+Plugin 'mattn/Gist-vim'                               " Gist代码片段管理
 
-"Bundle 'kien/ctrlp.vim'
-"Bundle 'edsono/vim-matchit'
-"Bundle 'majutsushi/tagbar'
-"Bundle 'jiazhoulvke/MarkdownView'
-"Bundle 'easymotion/vim-easymotion'
-"Bundle 'ldx/vim-manage-classpath'
-"Bundle 'tomasr/molokai'
-"Bundle 'leshill/vim-json'
-"Bundle 'sjl/gundo.vim'
-"Bundle 'tyru/open-browser.vim'
-"Bundle 'MarcWeber/vim-addon-mw-utils'
-"Bundle 'Valloric/YouCompleteMe'
-"Bundle 'tpope/vim-fugitive'
-"Bundle 'scrooloose/syntastic'
-"Bundle 'mattn/Gist-vim'
-"Bundle 'stephpy/vim-php-cs-fixer'
-"Bundle 'mattn/emmet-vim'
-"Bundle 'mattn/webapi-vim'
-"Bundle 'dyng/ctrlsf.vim'
-"Bundle 'msanders/snipmate.vim'
-"Bundle 'ekalinin/Dockerfile.vim'
-"Bundle 'terryma/vim-expand-region'
-"Bundle 'drmingdrmer/xptemplate'
+"Plugin 'terryma/vim-expand-region'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
 " 侦测文件类型
 filetype on
-" 针对不同的文件类型采用不同的缩进格式
-filetype indent on
 " 载入文件类型插件
 filetype plugin on
-" 启用自动补全
-filetype plugin indent on    " required
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 函数自动补全
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" 打开文件类型检测, 加了这句才可以用智能补全
-set completeopt=longest,menu
-
-au FileType php setlocal dict+=~/.vim/dict/php_funclist.dict
-au FileType css setlocal dict+=~/.vim/dict/css.dict
-au FileType c setlocal dict+=~/.vim/dict/c.dict
-au FileType cpp setlocal dict+=~/.vim/dict/cpp.dict
-au FileType scale setlocal dict+=~/.vim/dict/scale.dict
-au FileType javascript setlocal dict+=~/.vim/dict/javascript.dict
-au FileType html setlocal dict+=~/.vim/dict/javascript.dict
-au FileType html setlocal dict+=~/.vim/dict/css.dict
+" 针对不同的文件类型采用不同的缩进格式
+filetype indent on
+" 启动自动补全
+filetype plugin indent on
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -86,6 +91,8 @@ set shortmess=atI
 set langmenu=zh_CN.UTF-8
 " 帮助文件使用中文
 set helplang=cn
+" 禁用折叠
+set nofoldenable
 " 设置折叠模式
 set foldcolumn=4
 " 光标遇到折叠就打开
@@ -100,19 +107,6 @@ set history=10000
 set autoread
 " 突出显示当前所在位置
 set ruler
-" 突出显示当前行
-"set cursorline
-
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
-
-" Fast saving
-nmap <leader>w :w!<cr>
-
-" Fast editing of the .vimrc
-map <leader>e :e! ~/.vimrc<cr>
 
 " When vimrc is edited, reload it
 autocmd! bufwritepost vimrc source ~/.vimrc
@@ -121,6 +115,14 @@ autocmd! bufwritepost vimrc source ~/.vimrc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 开启语法高亮
+syntax enable
+" 允许用指定语法高亮配色方案替换默认方案
+syntax on
+" 配色方案
+colorscheme desert
+" colorscheme solarized
+" colorscheme molokai
 " 当光标所在行移动到文件顶部或者底部的时候，保持5行距离
 set scrolloff=5
 " Turn on Wild menu 增强模式中的命令行自动完成操作
@@ -160,36 +162,6 @@ set confirm
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts 设置配色和字体
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 开启语法高亮
-syntax enable
-
-" 此设置不适合Windows下secureCRT等工具
-"if exists('$TMUX')
-"    " 光标处理，编辑模式变成一个小竖条
-"    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-"    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-"
-"    " 代码背景色处理
-"    set term=screen-256color
-"else
-"    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-"    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-"endif
-
-" 配置编辑器配色，此配置不适合Windows下secureCRT等工具
-"if has('gui_running')
-"    set background=light
-"else
-"    set background=dark
-"endif
-"let g:solarized_termcolors=256
-"colorscheme solarized
-color desert
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 禁止生成临时文件, since most stuff is in svn, git anyway...
@@ -201,12 +173,7 @@ set noswapfile
 
 " persistent undo 持续撤销
 try
-    if mysys() == "windows"
-        set undodir=c:\windows\temp
-    else
-        set undodir=~/.vim_runtime/undodir
-    endif
-
+    set undodir=~/.vim_runtime/undodir
     set undofile
 catch
 endtry
@@ -232,7 +199,6 @@ set linebreak
 set textwidth=500
 " 带有如下符号的单词不要被换行分割
 set iskeyword+=_,$,@,%,#,-
-
 " 插入模式里: 插入 <Tab> 时使用合适数量的空格
 set expandtab
 " 在行和段开始处使用制表符
@@ -241,7 +207,6 @@ set smarttab
 set shiftwidth=4
 " 设置制表符(tab键)的宽度为4个空格
 set tabstop=4
-
 " 将tab替换为空格
 nmap tt :%s/\t/    /g<CR>
 
@@ -284,6 +249,7 @@ function! VisualSearch(direction) range
     let @" = l:saved_reg
 endfunction
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Command mode related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -297,16 +263,15 @@ cno $c e <C-\>eCurrentFileDir("e")<cr>
 cno $q <C-\>eDeleteTillSlash()<cr>
 
 " Bash like keys for the command line
-cnoremap <C-A>      <Home>
-cnoremap <C-E>      <End>
-cnoremap <C-K>      <C-U>
-
-cnoremap <C-P> <Up>
-cnoremap <C-N> <Down>
+cnoremap <C-A>   <Home>
+cnoremap <C-E>   <End>
+cnoremap <C-P>   <Up>
+cnoremap <C-N>   <Down>
+cnoremap <C-K>   <C-U>
 
 func! Cwd()
     let cwd = getcwd()
-    return "e " . cwd 
+    return "e " . cwd
 endfunc
 
 func! DeleteTillSlash()
@@ -339,32 +304,14 @@ map <space> /
 map <c-space> ?
 map <silent> <leader><cr> :noh<cr>
 
-" Smart way to move btw. windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
+" 绑定F11，快速向左切换buffer
+map <F11> :bp<CR>
+" 绑定F12，快速向右切换buffer
+map <F12> :bn<CR>
 " Close the current buffer
 map <leader>bd :Bclose<cr>
-
 " Close all the buffers
 map <leader>ba :1,300 bd!<cr>
-
-" Use the arrows to something usefull
-" 视图模式下右方向键不可移动光标
-"map <right> :bn<cr>
-" 视图模式下左方向键不可移动光标
-"map <left> :bp<cr>
-
-" Tab configuration
-map <leader>tn :tabnew<cr>
-map <leader>te :tabedit
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
-
-" When pressing <leader>cd switch to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>
 
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
@@ -386,12 +333,14 @@ function! <SID>BufcloseCloseIt()
     endif
 endfunction
 
-" Specify the behavior when switching between buffers
-try
-    set switchbuf=usetab
-    set stal=2
-catch
-endtry
+" Tab configuration
+map <leader>tn :tabnew<cr>
+map <leader>te :tabedit
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
+
+" When pressing <leader>cd switch to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -399,40 +348,6 @@ endtry
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 启动显示状态行(1),总是显示状态行(2)
 set laststatus=2
-" 状态行显示的信息
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
-
-function! CurDir()
-    let curdir = substitute(getcwd(), '/Users/apple/', "~/", "g")
-    return curdir
-endfunction
-
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    else
-        return ''
-    endif
-endfunction
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Parenthesis/bracket expanding
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-vnoremap $q <esc>`>a'<esc>`<i'<esc>
-vnoremap $e <esc>`>a"<esc>`<i"<esc>
-
-" Map auto complete of (, ", ', [
-inoremap $1 ()<esc>i
-inoremap $2 []<esc>i
-inoremap $3 {}<esc>i
-inoremap $4 {<esc>o}<esc>O
-
-"inoremap lh android:layout_height 可以用snipmate脚本替换效率更高通用型更强
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -462,6 +377,7 @@ endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.php :call DeleteTrailingWS()
 autocmd BufWrite *.js :call DeleteTrailingWS()
+autocmd BufWrite *.html :call DeleteTrailingWS()
 
 set guitablabel=%t
 
@@ -484,27 +400,10 @@ map <leader>o :BufExplorer<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Minibuffer plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:miniBufExplModSelTarget = 1
-let g:miniBufExplorerMoreThanOne = 2
-let g:miniBufExplModSelTarget = 0
-let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplVSplit = 25
-let g:miniBufExplSplitBelow=1
-
-let g:bufExplorerSortBy = "name"
-
-autocmd BufRead,BufNew :call UMiniBufExplorer
-
-map <leader>u :TMiniBufExplorer<cr>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Omni complete functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -565,13 +464,6 @@ endfunction
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => MRU plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let MRU_Max_Entries = 400
-map <leader>f :MRU<CR>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remove the Windows ^M - when the encodings gets messed up
@@ -589,64 +481,63 @@ map <leader>bb :cd ..<cr>
 "set selection=exclusive " 可选值 inclusive exclusive
 "set selectmode=mouse,key
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => NERDTree 配置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 当打开vim且没有文件时自动打开NERDTree
 autocmd vimenter * if !argc() | NERDTree | endif
 " 只剩 NERDTree时自动关闭
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " 启动vim后输入:NERDTree<Enter>,绑定一个快捷键 列出当前目录文件
 map <F3> :NERDTreeToggle<CR>
-" 设置目录树的宽度
-let NERDTreeWinSize = 25
 " 锁定不能通过<F3>关闭
 "imap <F3> <ESC> :NERDTreeToggle<CR>
+" 设置NERDTree子窗口位置
+let NERDTreeWinPos="left"
+" 设置目录树的宽度
+let NERDTreeWinSize = 25
+" 显示隐藏文件
+let NERDTreeShowHidden=1
+" 删除文件时自动删除文件对应 buffer
+let NERDTreeAutoDeleteBuffer=1
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Tagbar 配置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tagbar 打开标签栏
 nmap <F4> :TagbarToggle<CR>
 " 设置标签栏的宽度
 let g:tagbar_width=25
 let g:Tb_MaxSize = 2
+" 设置 tagbar 子窗口的位置出现在主编辑区的左边
+let g:tagbar_compact=1
 
-if has("autocmd")
-    autocmd BufReadPost *
-                \ if line("'\"") > 0 && line("'\"") <= line("$") |
-                \   exe "normal g`\"" |
-                \ endif
-endif
 
-" quickfix模式
-autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => ctrlsf 配置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "ag instead of ack
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
-"ctrlsf
 let g:ctrlsf_ackprg = 'ag'
 let g:ctrlsf_position = 'bottom'
 let g:ctrlsf_winsize = '30%'
-"let g:ctrlsf_winsize = '100'
 let g:ctrlsf_auto_close = 0
 let g:ctrlsf_context = '-B 5 -A 3'
 
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
-" If php-cs-fixer is in $PATH, you don't need to define line below
-"let g:php_cs_fixer_level = "all"                  " which level ?
-"let g:php_cs_fixer_config = "default"             " configuration
-"let g:php_cs_fixer_php_path = "/usr/local/bin/php"               " Path to PHP
-"" If you want to define specific fixers:
-let g:php_cs_fixer_fixers_list = "linefeed,short_tag,indentation"
-let g:php_cs_fixer_enable_default_mapping = 1     " Enable the mapping by default (<leader>pcd)
-"let g:php_cs_fixer_dry_run = 0                    " Call command with dry-run option
-"let g:php_cs_fixer_verbose = 0
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => indentLine 此插件可以显示缩进对齐线，并设置通过<F5>来控制是否显示
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:indentLine_char = '┊'
+map <F5> :IndentLinesToggle<CR>
 
-"gist hub config
-"let g:gist_use_password_in_gitconfig = 1
-let g:gist_clip_command = 'pbcopy'
-let g:gist_detect_filetype = 1
-let g:gist_open_browser_after_post = 1
-
-" gitgutter 同git diff，可实时展现（git版本控制的）文件中修改的行
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => gitgutter 同git diff，可实时展现（git版本控制的）文件中修改的行
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:gitgutter_diff_args = '-w'
 let g:gitgutter_avoid_cmd_prompt_on_windows = 0
 let g:gitgutter_sign_column_always = 1
@@ -663,55 +554,45 @@ let g:gitgutter_override_sign_column_highlight = 1
 "nnoremap <leader>gs :GitGutterToggle<CR>
 map <F6> :GitGutterToggle<CR>
 
-" molokai
-let g:molokai_original = 1
-let g:rehash256 = 1
 
-" indentLine 此插件可以显示缩进对齐线，并设置通过<F5>来控制是否显示
-let g:indentLine_char = '┊'
-map <F5> :IndentLinesToggle<CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => gitv插件，实现了用Vim查看Git的详细提交信息, 只需要打开Vim执行: gitv
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" gitv插件，实现了用Vim查看Git的详细提交信息, 只需要打开Vim执行: gitv
-
-" vim-commentary 可以快速注释与反注释多行内容, 但是它的注释符使用的是 commentstring, 默认是 /* %s */
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-commentary 可以快速注释与反注释多行内容, 但是它的注释符使用的是 commentstring, 默认是 /* %s */
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Visual模式下 gc 命令可以注释选中的行
 " 普通模式下 gcc 指令可以快速注释一行
 " gcu 可以撤销注释
 autocmd FileType python,shell,php set commentstring=#\ %s
 autocmd FileType mako set cms=##\ %s
 
-" airline 状态栏插件增强设置
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" molokai
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:molokai_original = 1
+let g:rehash256 = 1
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => airline 状态栏插件增强设置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:airline_powerline_fonts=1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
-let g:airline_left_sep = '▶'
-let g:airline_left_alt_sep = '❯'
-let g:airline_right_sep = '◀'
-let g:airline_right_alt_sep = '❮'
 let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline_section_x = '%{strftime("%c")}%'
+let g:airline_section_x = '%{strftime("%Y/%m/%d %H:%M:%S")}%'
 
-" syntastic相关
-execute pathogen#infect()
-let g:syntastic_python_checkers=['pylint']
-let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
 
-"easymotion
-let g:EasyMotion_leader_key = '<Leader><Leader>'
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
-let g:EasyMotion_smartcase = 1
-" JK motions: Line motions
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)"
-
-"emmet settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => emmet settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:user_emmet_mode='n'    "only enable normal mode functions.
 let g:user_emmet_mode='inv'  "enable all functions, which is equal to
 let g:user_emmet_mode='a'    "enable all function in all mode.
@@ -731,7 +612,43 @@ let g:user_emmet_settings = {
   \  },
   \}
 
-"youcompleteme.vim
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-multiple-cursors 配置：选中后，按下c就可以对单词批量修改了
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:multi_cursor_next_key='<C-n>' " 在普通模式下，按下 Ctrl-n 开始进入可视模式并选中光标下的单词，继续按 Ctrl-n 选择下一个相同的单词
+let g:multi_cursor_prev_key='<C-p>' " Ctrl-p 往回选一个
+let g:multi_cursor_skip_key='<C-x>' " Ctrl-x 则跳过下一个相同单词
+let g:multi_cursor_quit_key='<Esc>' " <Esc> 退出
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" syntastic 配置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+execute pathogen#infect()
+let g:syntastic_python_checkers=['pylint']
+let g:syntastic_html_checkers=['tidy', 'jshint']
+let g:syntastic_ignore_files=['.*\.html$', '.*\.htm$']
+let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" easymotion 配置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:EasyMotion_leader_key = '<Leader><Leader>'
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
+let g:EasyMotion_smartcase = 1
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" youcompleteme.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
@@ -769,9 +686,26 @@ let g:ycm_semantic_triggers =  {
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_min_num_of_chars_for_completion = 1
 
-vmap "+y :w !pbcopy<CR><CR>
-nmap "+p :r !pbpaste<CR><CR>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" snipmate 配置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:snips_author = "yedonghai"
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-json 配置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:vim_json_syntax_conceal = 1
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-markdown 配置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:vim_markdown_folding_disabled = 1
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "将文本复制到OS X剪贴板中
 noremap <leader>y "*y
 noremap <leader>yy "*Y

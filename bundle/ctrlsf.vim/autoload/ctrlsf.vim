@@ -2,7 +2,7 @@
 " Description: An ack/ag powered code search and view tool.
 " Author: Ye Ding <dygvirus@gmail.com>
 " Licence: Vim licence
-" Version: 1.10
+" Version: 1.40
 " ============================================================================
 
 """""""""""""""""""""""""""""""""
@@ -38,7 +38,14 @@ func! s:ExecSearch(args) abort
     call ctrlsf#win#OpenMainWindow()
     call ctrlsf#win#Draw()
     call ctrlsf#buf#ClearUndoHistory()
+    call ctrlsf#hl#HighlightMatch()
     call cursor(1, 1)
+
+    " populate quickfix and location list
+    if g:ctrlsf_populate_qflist
+        call setqflist(ctrlsf#db#MatchListQF())
+    endif
+    call setloclist(0, ctrlsf#db#MatchListQF())
 endf
 
 " Search()
@@ -69,6 +76,7 @@ endf
 "
 func! ctrlsf#Open() abort
     call ctrlsf#win#OpenMainWindow()
+    call ctrlsf#hl#HighlightMatch()
 endf
 
 " Redraw()
@@ -110,6 +118,12 @@ func! ctrlsf#Quit() abort
     call ctrlsf#win#CloseMainWindow()
 endf
 
+" OpenLocList()
+"
+func! ctrlsf#OpenLocList() abort
+    lopen
+endf
+
 " Toggle()
 "
 func! ctrlsf#Toggle() abort
@@ -132,15 +146,17 @@ func! ctrlsf#JumpTo(mode) abort
     let lnum = line.lnum
     let col  = empty(match)? 0 : match.col
 
-    if a:mode ==# 'o'
-        call s:OpenFileInWindow(file, lnum, col, 1)
-    elseif a:mode ==# 'O'
-        call s:OpenFileInWindow(file, lnum, col, 2)
-    elseif a:mode ==# 't'
+    if a:mode ==# 'open'
+        call s:OpenFileInWindow(file, lnum, col, 1, 0)
+    elseif a:mode ==# 'open_background'
+        call s:OpenFileInWindow(file, lnum, col, 2, 0)
+    elseif a:mode ==# 'split'
+        call s:OpenFileInWindow(file, lnum, col, 1, 1)
+    elseif a:mode ==# 'tab'
         call s:OpenFileInTab(file, lnum, col, 1)
-    elseif a:mode ==# 'T'
+    elseif a:mode ==# 'tab_background'
         call s:OpenFileInTab(file, lnum, col, 2)
-    elseif a:mode ==# 'p'
+    elseif a:mode ==# 'preview'
         call s:PreviewFile(file, lnum, col)
     endif
 endf
@@ -170,28 +186,33 @@ endf
 "
 " OpenFileInWindow() has 2 modes:
 "
-" 1. Open file in a window (usually the window where CtrlSF was launched), then
-" close CtrlSF window depending on the value of 'g:ctrlsf_auto_close'.
+" 1. Open file in a window (usually the window where CtrlSF is launched), then
+" close CtrlSF window or not, depending on value of 'g:ctrlsf_auto_close'.
 "
 " 2. Open file in a window like mode 1, but don't close CtrlSF no matter what
 " 'g:ctrlsf_auto_close' is.
 "
-func! s:OpenFileInWindow(file, lnum, col, mode) abort
+" About split:
+"
+" '0' means don't split by default unless there exists unsaved changes.
+" '1' means split in any case.
+"
+func! s:OpenFileInWindow(file, lnum, col, mode, split) abort
     if a:mode == 1 && g:ctrlsf_auto_close
         call ctrlsf#Quit()
     endif
 
     let target_winnr = ctrlsf#win#FindTargetWindow(a:file)
     if target_winnr == 0
-        exec 'silent split ' . a:file
+        exec 'silent split ' . fnameescape(a:file)
     else
         exec target_winnr . 'wincmd w'
 
         if bufname('%') !~# a:file
-            if &modified && !&hidden
-                exec 'silent split ' . a:file
+            if a:split || (&modified && !&hidden)
+                exec 'silent split ' . fnameescape(a:file)
             else
-                exec 'silent edit ' . a:file
+                exec 'silent edit ' . fnameescape(a:file)
             endif
         endif
     endif
@@ -217,7 +238,7 @@ func! s:OpenFileInTab(file, lnum, col, mode) abort
         call ctrlsf#Quit()
     endif
 
-    exec 'silen tabedit ' . a:file
+    exec 'silen tabedit ' . fnameescape(a:file)
 
     call ctrlsf#win#MoveCentralCursor(a:lnum, a:col)
 
@@ -241,7 +262,7 @@ func! s:PreviewFile(file, lnum, col) abort
         call ctrlsf#buf#WriteFile(a:file)
 
         " trigger filetypedetect (syntax highlight)
-        exec 'doau filetypedetect BufRead ' . a:file
+        exec 'doau filetypedetect BufRead ' . fnameescape(a:file)
     endif
 
     call ctrlsf#win#MoveCentralCursor(a:lnum, a:col)

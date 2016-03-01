@@ -98,14 +98,16 @@ function! s:open_browser(url) abort
     echo a:url
     return
   endif
+  let quote = &shellxquote == '"' ?  "'" : '"'
   if cmd =~# '^!'
-    let cmd = substitute(cmd, '%URL%', '\=shellescape(a:url)', 'g')
+    let cmd = substitute(cmd, '%URL%', '\=quote.a:url.quote', 'g')
+    let g:hoge = cmd
     silent! exec cmd
   elseif cmd =~# '^:[A-Z]'
     let cmd = substitute(cmd, '%URL%', '\=a:url', 'g')
     exec cmd
   else
-    let cmd = substitute(cmd, '%URL%', '\=shellescape(a:url)', 'g')
+    let cmd = substitute(cmd, '%URL%', '\=quote.a:url.quote', 'g')
     call system(cmd)
   endif
 endfunction
@@ -714,7 +716,7 @@ function! gist#Gist(count, bang, line1, line2, ...) abort
   let listmx = '^\%(-l\|--list\)\s*\([^\s]\+\)\?$'
   let bufnamemx = '^' . s:bufprefix .'\(\zs[0-9a-f]\+\ze\|\zs[0-9a-f]\+\ze[/\\].*\)$'
   if strlen(g:github_user) == 0 && anonymous == 0
-    echohl ErrorMsg | echomsg 'You don''t have configured a Github account. Read '':help gist-vim-setup''.' | echohl None
+    echohl ErrorMsg | echomsg 'You have not configured a Github account. Read '':help gist-vim-setup''.' | echohl None
     return
   endif
   if a:bang == '!'

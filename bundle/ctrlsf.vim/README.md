@@ -10,6 +10,23 @@ An ack/ag powered code search and view tool, like ack.vim or `:vimgrep` but toge
 
 ![ctrlsf_edit_demo](http://i.imgur.com/xMUm8Ii.gif)
 
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Basic Usage](#basic-usage)
+- [Key Maps](#key-maps)
+- [Use Your Own Map](#use-your-own-map)
+- [Edit Mode](#edit-mode)
+  - [Limitation](#limitation)
+- [Arguments](#arguments)
+  - [Example](#example)
+- [Tips](#tips)
+- [Configuration](#configuration)
+- [For user comes from pre v1.0](#for-user-comes-from-pre-v10)
+  - [Difference between v1.0 and pre-v1.0](#difference-between-v10-and-pre-v10)
+  - [Where and why backward compatibility is given up?](#where-and-why-backward-compatibility-is-given-up)
+
 ## Features
 
 - Search and display result in a user-friendly view with adjustable context.
@@ -22,7 +39,7 @@ An ack/ag powered code search and view tool, like ack.vim or `:vimgrep` but toge
 
 ## Installation
 
-1. Make sure you have [ack][1] or [ag][2] installed.
+1. Make sure you have [ack][1] or [ag][2] installed. (Note: currently only Ack2 is supported by plan)
 
 2. An easy way to install CtrlSF is using a package manager, like [pathogen][3], [vundle][4] or [neobundle][5].
 
@@ -53,6 +70,7 @@ An ack/ag powered code search and view tool, like ack.vim or `:vimgrep` but toge
 In CtrlSF window:
 
 - `Enter` - Open corresponding file of current line in the window which CtrlSF is launched from.
+- `<C-O>` - Like `Enter` but open file in a horizontal split window.
 - `t` - Like `Enter` but open file in a new tab.
 - `p` - Like `Enter` but open file in a preview window.
 - `O` - Like `Enter` but always leave CtrlSF window opening.
@@ -164,6 +182,8 @@ Read `:h ctrlsf-arguments` for a full list of arguments.
 
 - `-filetype` is useful when you only want to search in files of specific type. Read option `--type` in `ack`'s [manual][6] for more information.
 
+- If `-filetype` does not exactly match your need, there is an option `-filematch` with which you have more control on which files should be searched. `-filematch` accepts a pattern that only files match this pattern will be searched. Note the pattern is in syntax of your backend but not vim's. Also, a shortcut `-G` is available.
+
 - Running `:CtrlSF` without any argument or pattern will use word under cursor.
 
 ## Configuration
@@ -191,12 +211,6 @@ Read `:h ctrlsf-arguments` for a full list of arguments.
     let g:ctrlsf_default_root = 'project'
     ```
 
-- `g:ctrlsf_indent` defines how many spaces are placed between line number and content. Default value is 4.
-
-    ```vim
-    let g:ctrlsf_indent = 2
-    ```
-
 - `g:ctrlsf_mapping` defines maps used in result window and preview window. Value of this option is a dictionary, where key is a method and value is a key for mapping. An empty value can disable that method. You can just define a subset of full dictionary, those not defined functionalities will use default key mapping.
 
     ```vim
@@ -204,6 +218,12 @@ Read `:h ctrlsf-arguments` for a full list of arguments.
         \ "next": "n",
         \ "prev": "N",
         \ }
+    ```
+
+- `g:ctrlsf_populate_qflist` defines if CtrlSF will also feed quickfix and location list with search result. By default this feture is disabled but you can enable it by
+
+    ```vim
+    let g:ctrlsf_populate_qflist = 1
     ```
 
 - `g:ctrlsf_regex_pattern` defines CtrlSF using literal pattern or regular expression pattern as default. Default value is 0, which means literal pattern.
@@ -260,16 +280,7 @@ For those most frequently used arguments, an upper case short version is availab
 CtrlSF -I foo
 ```
 
-### Change List
-
-- Brand new edit mode is added.
-- Literal searching becomes default.
-- Mapping becomes customizable.
-- Smart case is added and turned on by default.
-- `g:ctrlsf_leading_space` is replaced by `g:ctrlsf_indent`.
-- etc...
-
-[1]: https://github.com/petdance/ack
+[1]: https://github.com/petdance/ack2
 [2]: https://github.com/ggreer/the_silver_searcher
 [3]: https://github.com/tpope/vim-pathogen
 [4]: https://github.com/gmarik/vundle
