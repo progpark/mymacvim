@@ -2,7 +2,7 @@
 " Description: An ack/ag powered code search and view tool.
 " Author: Ye Ding <dygvirus@gmail.com>
 " Licence: Vim licence
-" Version: 1.40
+" Version: 1.5.0
 " ============================================================================
 
 " BuildCommand()
@@ -37,6 +37,12 @@ func! s:BuildCommand(args) abort
         endif
     endif
     call add(tokens, case)
+
+    " ignore (dir, file)
+    let ignore_dir = ctrlsf#opt#GetIgnoreDir()
+    for dir in ignore_dir
+        call add(tokens, "--ignore-dir " . shellescape(dir))
+    endfor
 
     " regex
     if !ctrlsf#opt#GetRegex()

@@ -2,7 +2,7 @@
 " Description: An ack/ag powered code search and view tool.
 " Author: Ye Ding <dygvirus@gmail.com>
 " Licence: Vim licence
-" Version: 1.40
+" Version: 1.5.0
 " ============================================================================
 
 " preview buffer's name
@@ -65,7 +65,7 @@ func! s:InitPreviewWindow() abort
     let act_func_ref = {
         \ "pquit": "ctrlsf#preview#ClosePreviewWindow()"
         \ }
-    call ctrlsf#utils#SetMap(g:ctrlsf_mapping, act_func_ref)
+    call ctrlsf#utils#Nmap(g:ctrlsf_mapping, act_func_ref)
 
     augroup ctrlsfp
         au!

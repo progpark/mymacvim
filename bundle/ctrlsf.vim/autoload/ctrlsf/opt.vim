@@ -2,7 +2,7 @@
 " Description: An ack/ag powered code search and view tool.
 " Author: Ye Ding <dygvirus@gmail.com>
 " Licence: Vim licence
-" Version: 1.40
+" Version: 1.5.0
 " ============================================================================
 
 " option list of CtrlSF
@@ -13,6 +13,7 @@ let s:option_list = {
     \ '-filetype'   : {'args': 1},
     \ '-filematch'  : {'args': 1},
     \ '-ignorecase' : {'args': 0},
+    \ '-ignoredir'  : {'args': 1},
     \ '-literal'    : {'args': 0},
     \ '-matchcase'  : {'args': 0},
     \ '-regex'      : {'args': 0},
@@ -170,6 +171,16 @@ func! ctrlsf#opt#GetRegex() abort
     else
         return g:ctrlsf_regex_pattern
     endif
+endf
+
+" GetIgnoreDir()
+"
+func! ctrlsf#opt#GetIgnoreDir() abort
+    let ignore_dir = copy(g:ctrlsf_ignore_dir)
+    if ctrlsf#opt#IsOptGiven("ignoredir")
+        call add(ignore_dir, ctrlsf#opt#GetOpt("ignoredir"))
+    endif
+    return ignore_dir
 endf
 
 """""""""""""""""""""""""""""""""
