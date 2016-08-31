@@ -1,8 +1,8 @@
 " ============================================================================
-" Description: An ack/ag powered code search and view tool.
+" Description: An ack/ag/pt powered code search and view tool.
 " Author: Ye Ding <dygvirus@gmail.com>
 " Licence: Vim licence
-" Version: 1.5.0
+" Version: 1.6.1
 " ============================================================================
 
 " ctrlsf buffer's name
@@ -137,6 +137,11 @@ func! s:InitMainWindow() abort
         au BufWriteCmd         <buffer> call ctrlsf#Save()
         au BufHidden,BufUnload <buffer> call ctrlsf#buf#UndoAllChanges()
     augroup END
+
+    " hook for user customization
+    if exists("*g:CtrlSFAfterMainWindowInit")
+        silent! call g:CtrlSFAfterMainWindowInit()
+    end
 
     let b:ctrlsf_initialized = 1
 endf

@@ -1,6 +1,6 @@
 # ctrlsf.vim
 
-An ack/ag powered code search and view tool, like ack.vim or `:vimgrep` but together with more context, and let you edit in-place with powerful edit mode.
+An ack/ag/pt powered code search and view tool, like ack.vim or `:vimgrep` but together with more context, and let you edit in-place with powerful edit mode.
 
 ### Search and Explore
 
@@ -35,11 +35,13 @@ An ack/ag powered code search and view tool, like ack.vim or `:vimgrep` but toge
 
 - Preview mode for fast exploring.
 
+- View location results in a quickfix window.
+
 - Various options for customized search, view and edit.
 
 ## Installation
 
-1. Make sure you have [ack][1] or [ag][2] installed. (Note: currently only Ack2 is supported by plan)
+1. Make sure you have [ack][1], [ag][2] or [pt][8] installed. (Note: currently only Ack2 is supported by plan)
 
 2. An easy way to install CtrlSF is using a package manager, like [pathogen][3], [vundle][4] or [neobundle][5].
 
@@ -65,6 +67,9 @@ An ack/ag powered code search and view tool, like ack.vim or `:vimgrep` but toge
 
 6. `:CtrlSFOpen` can reopen CtrlSF window when you have closed CtrlSF window. It is free because it won't invoke a same but new search. A handy command `:CtrlSFToggle` is also available.
 
+7. Alternatively run `:CtrlSFQuickfix [pattern]`, it will only open a quickfix
+   window to show search result.
+
 ## Key Maps
 
 In CtrlSF window:
@@ -89,25 +94,25 @@ Some default defined keys may conflict with keys you have been used to when you 
 
 There are also some useful maps need to be mentioned.
 
-- `<Plug>CtrlSFPrompt`
+- `<Plug>CtrlSFPrompt` / `<Plug>CtrlSFQuickfixPrompt`
 
-    Input `:CtrlSF ` in command line for you, just a handy shortcut.
+    Input `:CtrlSF ` or `:CtrlSFQuickfix ` in command line for you, just a handy shortcut.
 
-- `<Plug>CtrlSFVwordPath`
+- `<Plug>CtrlSFVwordPath` / `<Plug>CtrlSFQuickfixVwordPath`
 
-    Input `:CtrlSF foo ` in command line where `foo` is the current visual selected word, waiting for further input.
+    Input `:CtrlSF foo ` or `:CtrlSFQuickfix foo ` in command line where `foo` is the current visual selected word, waiting for further input.
 
-- `<Plug>CtrlSFVwordExec`
+- `<Plug>CtrlSFVwordExec` / `<Plug>CtrlSFQuickfixVwordExec`
 
-    Like `<Plug>CtrlSFVwordPath`, but execute it immediately.
+    Like `<Plug>CtrlSFVwordPath` / `<Plug>CtrlSFQuickfixVwordPath`, but execute it immediately.
 
-- `<Plug>CtrlSFCwordPath`
+- `<Plug>CtrlSFCwordPath` / `<Plug>CtrlSFQuickfixCwordPath`
 
-    Input `:CtrlSF foo ` in command line where `foo` is word under the cursor.
+    Input `:CtrlSF foo ` or `:CtrlSFQuickfix foo ` in command line where `foo` is word under the cursor.
 
-- `<Plug>CtrlSFPwordPath`
+- `<Plug>CtrlSFPwordPath` / `<Plug>CtrlSFQuickfixPwordPath`
 
-    Input `:CtrlSF foo ` in command line where `foo` is the last search pattern of vim.
+    Input `:CtrlSF foo ` or `:CtrlSFQuickfix foo ` in command line where `foo` is the last search pattern of vim.
 
 For a full list of maps, please refer to the document.
 
@@ -124,6 +129,9 @@ nmap     <C-F>p <Plug>CtrlSFPwordPath
 nnoremap <C-F>o :CtrlSFOpen<CR>
 nnoremap <C-F>t :CtrlSFToggle<CR>
 inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+nmap     <C-F>l <Plug>CtrlSFQuickfixPrompt
+vmap     <C-F>l <Plug>CtrlSFQuickfixVwordPath
+vmap     <C-F>L <Plug>CtrlSFQuickfixVwordExec
 ```
 
 ## Edit Mode
@@ -211,6 +219,14 @@ Read `:h ctrlsf-arguments` for a full list of arguments.
     let g:ctrlsf_default_root = 'project'
     ```
 
+- `g:ctrlsf_extra_backend_args` is a dictionary that defines extra arguments that will be passed *literally* to backend, especially useful when you have your favorite backend and need some backend-specific features. For example, using `ptignore` file for [pt][8] should be like
+
+    ```vim
+    let g:ctrlsf_extra_backend_args = {
+        \ 'pt': '--home-ptignore'
+        \ }
+    ```
+
 - `g:ctrlsf_mapping` defines maps used in result window and preview window. Value of this option is a dictionary, where key is a method and value is a key for mapping. An empty value can disable that method. You can just define a subset of full dictionary, those not defined functionalities will use default key mapping.
 
     ```vim
@@ -287,3 +303,4 @@ CtrlSF -I foo
 [5]: https://github.com/Shougo/neobundle.vim
 [6]: https://github.com/gabesoft/vim-ags
 [7]: https://github.com/terryma/vim-multiple-cursors
+[8]: https://github.com/monochromegane/the_platinum_searcher

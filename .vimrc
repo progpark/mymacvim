@@ -692,7 +692,7 @@ let g:ycm_min_num_of_chars_for_completion = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " snipmate 配置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:snips_author = "yedonghai"
+let g:snips_author = "yedonghai <progpark@qq.com>"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
