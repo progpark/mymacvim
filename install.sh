@@ -18,7 +18,7 @@ sudo easy_install -ZU autopep8
 sudo ln -s /usr/bin/ctags /usr/local/bin/ctags
 
 mv -f ~/vim ~/vim_old
-cd ~/ && git clone https://github.com/progpark/willvim.git
+cd ~/ && git clone https://github.com/progpark/mymacvim.git
 mv -f ~/.vim ~/.vim_old
 mv -f ~/willvim ~/.vim
 mv -f ~/.vimrc ~/.vimrc_old
