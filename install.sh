@@ -18,17 +18,17 @@ sudo easy_install -ZU autopep8
 sudo ln -s /usr/bin/ctags /usr/local/bin/ctags
 
 mv -f ~/vim ~/vim_old
-cd ~/ && git clone https://github.com/progpark/willvim.git
+cd ~/ && git clone https://github.com/progpark/mymacvim.git
 mv -f ~/.vim ~/.vim_old
-mv -f ~/willvim ~/.vim
+mv -f ~/mymacvim ~/.vim
 mv -f ~/.vimrc ~/.vimrc_old
 ln -s ~/.vim/.vimrc ~/
 
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-echo "ProgPark正在努力为您安装bundle程序" > progparktemp
-echo "安装完毕将自动退出" >> progparktemp
-echo "请耐心等待" >> progparktemp
+echo "ProgPark正在努力为您安装bundle程序" > viminstall
+echo "安装完毕将自动退出" >> viminstall
+echo "请耐心等待" >> viminstall
 
-vim progparktemp -c "BundleInstall" -c "q" -c "q"
-rm -rf progparktemp
+vim viminstall -c "BundleInstall" -c "q" -c "q"
+rm -rf viminstall
 echo "安装完成"

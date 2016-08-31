@@ -2,7 +2,7 @@
 
 打开终端，执行下面的命令就自动安装好了：
 
-`wget -qO- https://raw.github.com/progpark/willvim/master/install.sh | sh -x`
+`wget -qO- https://raw.github.com/progpark/mymacvim/master/install.sh | sh -x`
 
 - 重新打开vim即可看到效果
 
