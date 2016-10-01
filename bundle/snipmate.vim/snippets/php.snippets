@@ -5,7 +5,7 @@ snippet doc
 	 *
 	 * @author ${2:`g:snips_author`}
 	 * @version ${3:$Id$}
-	 * @copyright ${4:$2}, `strftime('%d %B, %Y')`
+	 * @copyright ${4:`g:snips_owner`}, `strftime('%d %B, %Y')`
 	 * @package ${5:default}
 	 */
 # PHP文档
@@ -99,7 +99,7 @@ snippet class
 		 */
 		public function __construct()
 		{
-			parent::__construct();
+			${2:# parent::__construct();}
 		}
 
 	}
