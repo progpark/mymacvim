@@ -1,8 +1,8 @@
 " ============================================================================
-" Description: An ack/ag/pt powered code search and view tool.
+" Description: An ack/ag/pt/rg powered code search and view tool.
 " Author: Ye Ding <dygvirus@gmail.com>
 " Licence: Vim licence
-" Version: 1.6.1
+" Version: 1.8.3
 " ============================================================================
 
 " WriteString()
@@ -31,6 +31,19 @@ func! ctrlsf#buf#WriteFile(file) abort
     silent $delete _ " delete trailing empty line
     call setbufvar('%', '&modifiable', modifiable_bak)
     call setbufvar('%', '&modified', 0)
+endf
+
+" WarnIfChanged()
+"
+func! ctrlsf#buf#WarnIfChanged() abort
+    if getbufvar('%', '&modified')
+        call ctrlsf#log#Warn("Will discard ALL unsaved changes, continue? (y/N)")
+        let confirm = nr2char(getchar()) | redraw!
+        if !(confirm ==? "y")
+            return 0
+        endif
+    endif
+    return 1
 endf
 
 " ClearUndoHistory()
@@ -70,19 +83,21 @@ func! ctrlsf#buf#ToggleMap(...) abort
         let enable_map = !b:ctrlsf_map_enabled
     endif
 
-    " key 'prevw' is a deprecated key but here for backward compatibility
+    " key 'prevw' is deprecated but remains for backward compatibility
     let act_func_ref = {
-        \ "open"  : "ctrlsf#JumpTo('open')",
-        \ "openb" : "ctrlsf#JumpTo('open_background')",
-        \ "split" : "ctrlsf#JumpTo('split')",
-        \ "tab"   : "ctrlsf#JumpTo('tab')",
-        \ "tabb"  : "ctrlsf#JumpTo('tab_background')",
-        \ "prevw" : "ctrlsf#JumpTo('preview')",
-        \ "popen" : "ctrlsf#JumpTo('preview')",
-        \ "quit"  : "ctrlsf#Quit()",
-        \ "next"  : "ctrlsf#NextMatch(1)",
-        \ "prev"  : "ctrlsf#NextMatch(0)",
-        \ "llist" : "ctrlsf#OpenLocList()",
+        \ "open"    : "ctrlsf#JumpTo('open')",
+        \ "openb"   : "ctrlsf#JumpTo('open_background')",
+        \ "split"   : "ctrlsf#JumpTo('split')",
+        \ "vsplit"  : "ctrlsf#JumpTo('vsplit')",
+        \ "tab"     : "ctrlsf#JumpTo('tab')",
+        \ "tabb"    : "ctrlsf#JumpTo('tab_background')",
+        \ "popen"   : "ctrlsf#JumpTo('preview')",
+        \ "popenf"  : "ctrlsf#JumpTo('preview_foreground')",
+        \ "quit"    : "ctrlsf#Quit()",
+        \ "next"    : "ctrlsf#NextMatch(-1, 1)",
+        \ "prev"    : "ctrlsf#NextMatch(-1, 0)",
+        \ "loclist" : "ctrlsf#OpenLocList()",
+        \ "prevw"   : "ctrlsf#JumpTo('preview')",
         \ }
 
     if enable_map

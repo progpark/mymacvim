@@ -2,7 +2,7 @@
 
 Author:  Ye Ding <dygvirus@gmail.com>
 Licence: Vim licence, see |license|
-Version: 1.6.1
+Version: 1.8.3
 
 
            .-') _   _  .-')              .-')               
@@ -235,6 +235,8 @@ mode:
 
     <p>            Open a preview window to view file.
 
+    <P>            Open a preview window to view file and switch focus to it.
+
     <O>            Like <o>, but always leave CtrlSF window open.
 
     <T>            Like <t>, but focus CtrlSF window instead of opened new tab.
@@ -329,9 +331,11 @@ Make this search be smart-cased.
 
 g:ctrlsf_ackprg                                              *'g:ctrlsf_ackprg'*
 Default: auto
+Available: 'ag', 'ack', 'pt', 'rg'
 'g:ctrlsf_ackprg' defines the path of ack/ag which CtrlSF will use as its
-backend. If nothing is given, CtrlSF will try 'ag' first and fallback to
-'ack' if 'ag' is not available. You can also explicitly set it by
+backend. If nothing is given, CtrlSF will try to figure out a proper backend.
+Preferred order is 'ag' > 'ack' > 'rg' > 'pt' > 'ack-grep'. You can also
+explicitly set it by
 >
     let g:ctrlsf_ackprg = '/usr/local/bin/ag'
 <
@@ -345,6 +349,7 @@ prevent this behavior by setting this option to 0
 <
 g:ctrlsf_case_sensitive                              *'g:ctrlsf_case_sensitive'*
 Default: 'smart'
+Available: 'smart', 'yes', 'no'
 Defines the default case-sensitivity in search. Possible values are 'yes',
 'no' and 'smart'. 'yes' and 'no' works exactly as its meaning. 'smart' means
 smart-case, which is as same as it is in Vim.
@@ -357,6 +362,14 @@ Confirm before saving your changes to file. If you are tired of typing 'yes',
 you can turn off this confirmation by
 >
     let g:ctrlsf_confirm_save = 0
+<
+g:ctrlsf_confirm_unsaving_quit                *'g:ctrlsf_confirm_unsaving_quit'*
+Default: 1
+Confirm before quitting if there is any unsaved change. Usually it can protect
+you from occasionally pressing 'q' then all changes blow off. You can disable
+this protection by
+>
+    let g:ctrlsf_confirm_unsaving_quit = 0
 <
 g:ctrlsf_context                                            *'g:ctrlsf_context'*
 Default: '-C 3'
@@ -374,19 +387,40 @@ when something does not work as you expected.
 <
 g:ctrlsf_default_root                                  *'g:ctrlsf_default_root'*
 Default: 'cwd'
+Available: 'cwd', 'project', 'project+xx'
 Defines how CtrlSF works if no explicit search path is given. Possible value
-is 'cwd' and 'project'. With 'cwd', CtrlSF uses current working directory as
-its search root. With 'project', CtrlSF will try to find project root of
-current file and use it. A project root is a directory which VCS folder is
-placed in, currently CtrlSF can recognize .git, .hg, .svn, .bzr, _darcs.
+is 'cwd','project' and 'project+xx'.('xx' is two sub-options for 'project'.)
+
+Explanation for each option:
+
+'cwd'         - Use current working directory.
+'project'     - CtrlSF will try to find project root from current file to
+                its ancestors. A project root is a directory with VCS
+                folder is placed in. Currently CtrlSF can recognize .git,
+                .hg, .svn, .bzr, _darcs.
+'project+xx'  - Same as 'project'. But you can have more control about how
+                project directory is found and fallback root if no project
+                root is found.
+
+    First 'x' defines from where to search project root. It has 2 possible
+    values:
+        'f' - search from current file.
+        'w' - search from current working directory.
+
+    Second 'x' defines the fallback search root for the case project root is
+    not found. It has 2 possible values:
+        'f' - current file is fallback search root.
+        'w' - current working directory is fallback search root.
+
+    Option 'project' is identical to 'project+ff'.
 >
-    let g:ctrlsf_default_root = 'project'
+    let g:ctrlsf_default_root = 'project+fw'
 <
 g:ctrlsf_extra_backend_args                      *'g:ctrlsf_extra_backend_args'*
 Default: {}
 Defines extra arguments that will be passed **literally** to backend. It's
 useful when you are needing backend-specific features. Acceptable keys are
-'ack', 'ag', 'pt'.
+'ack', 'ag', 'pt', 'rg'.
 >
     let g:ctrlsf_extra_backend_args = {
         \ 'pt': '--home-ptignore'
@@ -420,6 +454,7 @@ Default:
         "open"    : ["<CR>", "o"],
         "openb"   : "O",
         "split"   : "<C-O>",
+        "vsplit"  : "",
         "tab"     : "t",
         "tabb"    : "T",
         "popen"   : "p",
@@ -448,6 +483,7 @@ If you are used to vim builtin quickfix list and want to use |:cnext|,
 <
 g:ctrlsf_position                                          *'g:ctrlsf_position'*
 Default: 'left'
+Available: 'left', 'right', 'top', 'bottom'
 By default CtrlSF window will be opened at left. You can also specify for it to
 be opened 'top', 'right', or 'bottom'. E.g.:
 >
@@ -485,6 +521,7 @@ this value is empty, means no key is mapped for this feature.
 
 g:ctrlsf_winsize                                                *'g:ctrlsf_width'*
 Default: 'auto'
+Available: 'auto', 'xx%', 'xx'
 Size of CtrlSF window. This is its width if the window opens vertically (to the
 left or right), or height if it opens horizontally (above or below). It accepts
 string as its value and there are 3 types of argument:

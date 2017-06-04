@@ -7,8 +7,9 @@ set cpo-=< cpo+=B
 com! XPMgetSID let s:sid =  matchstr("<SID>", '\zs\d\+_\ze')
 XPMgetSID
 delc XPMgetSID
+runtime plugin/xptemplate.conf.vim
 runtime plugin/debug.vim
-let s:log = CreateLogger( 'warn' )
+let s:log = xpt#debug#Logger( 'warn' )
 let g:xpm_mark = 'p'
 let g:xpm_mark_nextline = 'l'
 let g:xpm_changenr_level = 1000
@@ -20,7 +21,6 @@ let g:XPMpreferRight = 'r'
 augroup XPM
 	au!
 	au BufEnter * call <SID>InitBuf()
-	au BufEnter * call XPMcheckStatusline()
 augroup END
 fun! XPMcheckStatusline()
 	if stridx( &l:statusline, 'XPMautoUpdate' ) >= 0
@@ -179,7 +179,12 @@ fun! XPMupdate(...)
 		return ''
 	endif
 	let d = s:BufData()
-	let needUpdate = d.isUpdateNeeded()
+	let mode = a:0 > 0 ? a:000[0] : 'auto'
+	if mode == 'force'
+		let needUpdate = 1
+	else
+		let needUpdate = d.isUpdateNeeded()
+	endif
 	if !needUpdate
 		call d.snapshot()
 		call d.saveCurrentStat()
@@ -326,6 +331,7 @@ fun! s:normalModeUpdate() dict
 			return self.updateWithNewChangeRange(stat.currentPosition,stat.currentPosition)
 		endif
 	elseif self.lastMode =~ s:insertPattern
+		return g:XPM_RET.no_updated_made
 	else
 		let linewiseDeletion = stat.positionOfMarkP[0] == 0
 		let lineNrOfChangeEndInLastStat = ce[0] - diffOfLine

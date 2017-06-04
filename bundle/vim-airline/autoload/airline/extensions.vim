@@ -1,6 +1,8 @@
 " MIT License. Copyright (c) 2013-2016 Bailey Ling.
 " vim: et ts=2 sts=2 sw=2
 
+scriptencoding utf-8
+
 let s:ext = {}
 let s:ext._theme_funcrefs = []
 
@@ -210,8 +212,16 @@ function! airline#extensions#load()
     call airline#extensions#syntastic#init(s:ext)
   endif
 
+  if (get(g:, 'airline#extensions#ale#enabled', 1) && exists('g:loaded_ale'))
+    call airline#extensions#ale#init(s:ext)
+  endif
+
   if get(g:, 'airline#extensions#whitespace#enabled', 1)
     call airline#extensions#whitespace#init(s:ext)
+  endif
+
+  if (get(g:, 'airline#extensions#neomake#enabled', 1) && exists(':Neomake'))
+    call airline#extensions#neomake#init(s:ext)
   endif
 
   if get(g:, 'airline#extensions#po#enabled', 1) && executable('msgfmt')
@@ -248,6 +258,10 @@ function! airline#extensions#load()
 
   if (get(g:, 'airline#extensions#windowswap#enabled', 1) && get(g:, 'loaded_windowswap', 0))
     call airline#extensions#windowswap#init(s:ext)
+  endif
+
+  if (get(g:, 'airline#extensions#obsession#enabled', 1) && exists('*ObsessionStatus'))
+    call airline#extensions#obsession#init(s:ext)
   endif
 
   if !get(g:, 'airline#extensions#disable_rtp_load', 0)

@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-if exists('g:loaded_gitgutter') || !executable('git') || !has('signs') || &cp
+if exists('g:loaded_gitgutter') || !has('signs') || &cp
   finish
 endif
 let g:loaded_gitgutter = 1
@@ -17,7 +17,7 @@ if !exists("*gettabvar")
   let g:gitgutter_eager = 0
 endif
 
-function! s:set(var, default)
+function! s:set(var, default) abort
   if !exists(a:var)
     if type(a:default)
       execute 'let' a:var '=' string(a:default)
@@ -51,6 +51,11 @@ call s:set('g:gitgutter_map_keys',                    1)
 call s:set('g:gitgutter_avoid_cmd_prompt_on_windows', 1)
 call s:set('g:gitgutter_async',                       1)
 call s:set('g:gitgutter_log',                         0)
+call s:set('g:gitgutter_git_executable',          'git')
+
+if !executable(g:gitgutter_git_executable)
+  call gitgutter#utility#warn('cannot find git. Please set g:gitgutter_git_executable.')
+endif
 
 call gitgutter#highlight#define_sign_column_highlight()
 call gitgutter#highlight#define_highlights()
@@ -123,11 +128,11 @@ function! GitGutterGetHunks()
   return gitgutter#utility#is_active() ? gitgutter#hunk#hunks() : []
 endfunction
 
-" Returns an array that contains a summary of the current hunk status.
-" The format is [ added, modified, removed ], where each value represents
-" the number of lines added/modified/removed respectively.
+" Returns an array that contains a summary of the hunk status for the current
+" window.  The format is [ added, modified, removed ], where each value
+" represents the number of lines added/modified/removed respectively.
 function! GitGutterGetHunkSummary()
-  return gitgutter#hunk#summary()
+  return gitgutter#hunk#summary(winbufnr(0))
 endfunction
 
 " }}}
@@ -191,18 +196,35 @@ augroup gitgutter
   endif
 
   if g:gitgutter_eager
-    autocmd BufEnter,BufWritePost,FileChangedShellPost *
+    autocmd BufWritePost,FileChangedShellPost * call gitgutter#process_buffer(bufnr(''), 0)
+
+    " When you enter a new tab, BufEnter is only fired if the buffer you enter
+    " is not the one you came from.
+    "
+    " For example:
+    "
+    "   `:tab split` fires TabEnter but not BufEnter.
+    "   `:tab new`   fires TabEnter and BufEnter.
+    "
+    " As and when both TabEnter and BufEnter are fired, we do not want to
+    " process the entered buffer twice.  We avoid this by setting and clearing
+    " a flag.
+
+    autocmd BufEnter *
           \  if gettabvar(tabpagenr(), 'gitgutter_didtabenter') |
           \   call settabvar(tabpagenr(), 'gitgutter_didtabenter', 0) |
           \ else |
           \   call gitgutter#process_buffer(bufnr(''), 0) |
           \ endif
+
     autocmd TabEnter *
-          \  call settabvar(tabpagenr(), 'gitgutter_didtabenter', 1) |
+          \ call settabvar(tabpagenr(), 'gitgutter_didtabenter', 1) |
           \ call gitgutter#all()
+
     if !has('gui_win32')
       autocmd FocusGained * call gitgutter#all()
     endif
+
   else
     autocmd BufRead,BufWritePost,FileChangedShellPost * call gitgutter#process_buffer(bufnr(''), 0)
   endif

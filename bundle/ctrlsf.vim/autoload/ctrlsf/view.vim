@@ -1,8 +1,8 @@
 " ============================================================================
-" Description: An ack/ag/pt powered code search and view tool.
+" Description: An ack/ag/pt/rg powered code search and view tool.
 " Author: Ye Ding <dygvirus@gmail.com>
 " Licence: Vim licence
-" Version: 1.6.1
+" Version: 1.8.3
 " ============================================================================
 
 func! s:Summary(resultset) abort
@@ -82,11 +82,7 @@ endf
 "
 func! ctrlsf#view#Reflect(vlnum) abort
     let resultset = ctrlsf#db#ResultSet()
-
-    let ret = s:BSearch(resultset, 0, len(resultset) - 1, a:vlnum)
-    call ctrlsf#log#Debug("Reflect: vlnum: %s, result: %s", a:vlnum, string(ret))
-
-    return ret
+    return s:BSearch(resultset, 0, len(resultset) - 1, a:vlnum)
 endf
 
 func! s:BSearch(resultset, left, right, vlnum) abort

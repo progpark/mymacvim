@@ -1,8 +1,8 @@
 " ============================================================================
-" Description: An ack/ag/pt powered code search and view tool.
+" Description: An ack/ag/pt/rg powered code search and view tool.
 " Author: Ye Ding <dygvirus@gmail.com>
 " Licence: Vim licence
-" Version: 1.6.1
+" Version: 1.8.3
 " ============================================================================
 
 " ctrlsf buffer's name
@@ -56,7 +56,7 @@ func! ctrlsf#win#OpenMainWindow() abort
           \ 'top'    : 'topleft',  'left'  : 'topleft vertical',
           \ 'bottom' : 'botright', 'right' : 'botright vertical'}
           \[g:ctrlsf_position] . ' '
-    exec 'silent keepalt ' . openpos . winsize . 'split ' . '__CtrlSF__'
+    exec 'silent keepalt ' . openpos . winsize . 'split ' . (bufnr('__CtrlSF__') != -1 ? '+b'.bufnr('__CtrlSF__') : '__CtrlSF__')
 
     call s:InitMainWindow()
 

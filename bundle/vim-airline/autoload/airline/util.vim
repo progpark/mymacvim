@@ -1,8 +1,18 @@
 " MIT License. Copyright (c) 2013-2016 Bailey Ling.
 " vim: et ts=2 sts=2 sw=2
 
+scriptencoding utf-8
+
 call airline#init#bootstrap()
 let s:spc = g:airline_symbols.space
+
+function! airline#util#shorten(text, winwidth, minwidth)
+  if winwidth(0) < a:winwidth && len(split(a:text, '\zs')) > a:minwidth
+    return matchstr(a:text, '^.\{'.a:minwidth.'}').'…'
+  else
+    return a:text
+  endif
+endfunction
 
 function! airline#util#wrap(text, minwidth)
   if a:minwidth > 0 && winwidth(0) < a:minwidth
@@ -67,4 +77,3 @@ else
     return 0
   endfunction
 endif
-

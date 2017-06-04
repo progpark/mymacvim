@@ -1,3 +1,29 @@
+2016-07-07
+==========
+
+Fixed
+-----
+
+*   engine: always try to init buf data for xptemplate before XPTupdate. fixed: #79
+
+2015-06-28
+==========
+
+Fixed
+-----
+
+*   bracket: fix incorrect indent with cr
+
+*   engine: fix wrapper indent
+*   engine: normal-mode "x" breaks xpt
+
+*   filter: pass test 60-ph-func-Next 05-def-text-arg. Next move focus to next ph
+
+*   snippet-matching: snippet key should be stored in filetype instead of buffer
+*   snippet-matching: use keyword instead of word
+
+*   syntax: correct escaping nested mark
+
 2015-06-17
 ==========
 

@@ -1,8 +1,8 @@
 "=============================================================================
 " File: gist.vim
 " Author: Yasuhiro Matsumoto <mattn.jp@gmail.com>
-" Last Change: 04-Jul-2015.
-" Version: 7.2
+" Last Change: 10-Oct-2016.
+" Version: 7.3
 " WebPage: http://github.com/mattn/gist-vim
 " License: BSD
 
@@ -119,6 +119,28 @@ function! s:shellwords(str) abort
   return words
 endfunction
 
+function! s:truncate(str, num)
+  let mx_first = '^\(.\)\(.*\)$'
+  let str = a:str
+  let ret = ''
+  let width = 0
+  while 1
+    let char = substitute(str, mx_first, '\1', '')
+    let cells = strdisplaywidth(char)
+    if cells == 0 || width + cells > a:num
+      break
+    endif
+    let width = width + cells
+    let ret .= char
+    let str = substitute(str, mx_first, '\2', '')
+  endwhile
+  while width + 1 <= a:num
+    let ret .= " "
+    let width = width + 1
+  endwhile
+  return ret
+endfunction
+
 function! s:format_gist(gist) abort
   let files = sort(keys(a:gist.files))
   if empty(files)
@@ -132,12 +154,20 @@ function! s:format_gist(gist) abort
   else
     let code = ''
   endif
-  let desc = type(a:gist.description)==0 || a:gist.description ==# '' ? '' : '('.a:gist.description.')'
+  let desc = type(a:gist.description)==0 || a:gist.description ==# '' ? '' : a:gist.description
   let name = substitute(name, '[\r\n\t]', ' ', 'g')
   let name = substitute(name, '  ', ' ', 'g')
   let desc = substitute(desc, '[\r\n\t]', ' ', 'g')
   let desc = substitute(desc, '  ', ' ', 'g')
-  return printf('gist: %s %s %s%s', a:gist.id, name, desc, code)
+  " Display a nice formatted (and truncated if needed) table of gists on screen
+  " Calculate field lengths for gist-listing formatting on screen
+  redir =>a |exe "sil sign place buffer=".bufnr('')|redir end
+  let signlist = split(a, '\n')
+  let width = winwidth(0) - ((&number||&relativenumber) ? &numberwidth : 0) - &foldcolumn - (len(signlist) > 2 ? 2 : 0)
+  let idlen = 33
+  let namelen = get(g:, 'gist_namelength', 30)
+  let desclen = width - (idlen + namelen + 10)
+  return printf('gist: %s %s %s', s:truncate(a:gist.id, idlen), s:truncate(name, namelen), s:truncate(desc, desclen))
 endfunction
 
 " Note: A colon in the file name has side effects on Windows due to NTFS Alternate Data Streams; avoid it.
@@ -211,11 +241,17 @@ function! s:GistList(gistls, page) abort
   let b:gistls = a:gistls
   let b:page = a:page
   setlocal buftype=nofile bufhidden=hide noswapfile
+  setlocal cursorline
   setlocal nomodified
   setlocal nomodifiable
   syntax match SpecialKey /^gist:/he=e-1
   syntax match Title /^gist: \S\+/hs=s+5 contains=ALL
   nnoremap <silent> <buffer> <cr> :call <SID>GistListAction(0)<cr>
+  nnoremap <silent> <buffer> o :call <SID>GistListAction(0)<cr>
+  nnoremap <silent> <buffer> b :call <SID>GistListAction(1)<cr>
+  nnoremap <silent> <buffer> y :call <SID>GistListAction(2)<cr>
+  nnoremap <silent> <buffer> p :call <SID>GistListAction(3)<cr>
+  nnoremap <silent> <buffer> <esc> :bw<cr>
   nnoremap <silent> <buffer> <s-cr> :call <SID>GistListAction(1)<cr>
 
   cal cursor(1+len(oldlines),1)
@@ -437,7 +473,7 @@ function! s:GistGet(gistid, clipboard) abort
         return
       endtry
       let &undolevels = old_undolevels
-      setlocal buftype=acwrite bufhidden=delete noswapfile
+      setlocal buftype=acwrite bufhidden=hide noswapfile
       setlocal nomodified
       doau StdinReadPost,BufRead,BufReadPost
       let gist_detect_filetype = get(g:, 'gist_detect_filetype', 0)
@@ -466,15 +502,28 @@ function! s:GistGet(gistid, clipboard) abort
   endif
 endfunction
 
-function! s:GistListAction(shift) abort
+function! s:GistListAction(mode) abort
   let line = getline('.')
   let mx = '^gist:\s*\zs\(\w\+\)\ze.*'
   if line =~# mx
     let gistid = matchstr(line, mx)
-    if a:shift
+    if a:mode == 1
       call s:open_browser('https://gist.github.com/' . gistid)
-    else
+    elseif a:mode == 0
       call s:GistGet(gistid, 0)
+      wincmd w
+      bw
+    elseif a:mode == 2
+      call s:GistGet(gistid, 1)
+      " TODO close with buffe rname
+      bdelete
+      bdelete
+    elseif a:mode == 3
+      call s:GistGet(gistid, 1)
+      " TODO close with buffe rname
+      bdelete
+      bdelete
+      normal! "+p
     endif
     return
   endif
