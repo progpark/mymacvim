@@ -1,28 +1,29 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                    Vim 环境下快捷键说明                                                      |
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" F1  ：快速显示桌面                                           " Ctrl + c             视图模式选中单个字符                     |
-" F2  ：快速显示Dashboard                                      " Ctrl + v             视图模式选中正行                         |
-" F3  ：快速切换Nerdtree的开启状态，默认开启                   " Command + [          切换tmux窗口                             |
-" F4  ：快速切换Tagbar的开启状态，默认关闭                     " Command + ]          切换tmux窗口                             |
-" F5  ：快速切换indentLine对齐线的开启撞他，默认开启           " Command + n          新打开一个iterm2窗口                     |
-" F6  ：快速查看Git修改状态，默认关闭                          " Command + w          关闭一个iterm2窗口                       |
-" F7  ：                                                       " Command + d          纵向切割iterm2窗口                       |
-" F8  ：                                                       " Shift + Command + d  横向切割iterm2窗口                       |
-" F9  ：                                                       " Ctrl + w             切换窗口内分区                           |
-" F10 ：                                                       " Ctrl + a             命令行切换至行首                         |
-" F11 ：快速向左切换buffer，并在当前窗口打开buffer             " Ctrl + e             命令行切换至行尾                         |
-" F12 ：快速向右切换buffer，并在当前窗口打开buffer             " Shift + r            刷新nerdtree目录树                       |
+" F1  ：快速显示桌面                                    " Ctrl + c             视图模式选中单个字符                     |
+" F2  ：快速显示Dashboard                               " Ctrl + v             视图模式选中正行                         |
+" F3  ：快速切换Nerdtree的开启状态，默认开启            " Command + [          切换tmux窗口                             |
+" F4  ：快速切换Tagbar的开启状态，默认关闭              " Command + ]          切换tmux窗口                             |
+" F5  ：快速切换indentLine对齐线的开启撞他，默认开启    " Command + n          新打开一个iterm2窗口                     |
+" F6  ：快速查看Git修改状态，默认关闭                   " Command + w          关闭一个iterm2窗口                       |
+" F7  ：                                                " Command + d          纵向切割iterm2窗口                       |
+" F8  ：                                                " Shift + Command + d  横向切割iterm2窗口                       |
+" F9  ：                                                " Ctrl + w             切换窗口内分区                           |
+" F10 ：                                                " Ctrl + a             命令行切换至行首                         |
+" F11 ：快速向左切换buffer，并在当前窗口打开buffer      " Ctrl + e             命令行切换至行尾                         |
+" F12 ：快速向右切换buffer，并在当前窗口打开buffer      " Shift + r            刷新nerdtree目录树                       |
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                     Ctags 使用说明                           "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 1)、在项目根目录执行命令生成标签库：ctags -R *               "
-" 2)、从项目根目录打开要编辑的文件                             "
-" 3)、Ctrl + ] 查找函数主题（光标至于函数名称处）              "
-"     Ctrl + t 返回查找处                                      "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                        Ctags 使用说明（[...]表示可选）                     |
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 1)、在项目根目录执行命令生成标签库：ctags [--languages=php] -R .           |
+" 2)、从项目根目录打开要编辑的文件                                           |
+" 3)、Ctrl + ] 查找函数主题（光标至于函数名称处）                            |
+"     Ctrl + t 返回查找处                                                    |
+" 4)、ctags 标签库与 ycm 及 gitv 有冲突：需增加vim对ruby和lua脚本的支持      |
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
@@ -41,40 +42,41 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'                            " Vim插件管理包，必须
-Plugin 'altercation/vim-colors-solarized'             " Vim配色方案
-Plugin 'tomasr/molokai'                               " Vim配色方案
-Plugin 'scrooloose/nerdtree'                          " 左侧导航目录树
-Plugin 'majutsushi/tagbar'                            " 右侧标签目录树
-Plugin 'bling/vim-airline'                            " 用于配置美观的底部状态栏
-Plugin 'Yggdroot/indentLine'                          " 更加美观的显示缩进对齐线
-Plugin 'terryma/vim-multiple-cursors'                 " Vim支持多重选取并编辑内容:Ctrl+n
-Plugin 'rking/ag.vim'                                 " 内容搜索
-Plugin 'mileszs/ack.vim'                              " 内容搜索
-Plugin 'Raimondi/delimitMate'                         " 用于补全括号和引号
-Plugin 'anyakichi/vim-surround'                       " 用于快速切换括号/引号或者标签
-Plugin 'ShowTrailingWhitespace'                       " 用于高亮显示行尾空格
-Plugin 'tpope/vim-fugitive'                           " 将Git集成在Vim中
-Plugin 'airblade/vim-gitgutter'                       " 实时显示git更改
-Plugin 'gregsexton/gitv'                              " 查看Git详细提交日志(类似gitk)
-Plugin 'tpope/vim-commentary'                         " Vim批量注释工具, 可以注释多行和去除多行注释
-Plugin 'mattn/emmet-vim'                              " 用于更加方便的编辑html和css代码
-Plugin 'kien/ctrlp.vim'                               " 文件快速搜索插件
-Plugin 'dyng/ctrlsf.vim'                              " 仿Sublime的全局搜索插件
-Plugin 'Valloric/YouCompleteMe'                       " 代码自动补全
-Plugin 'msanders/snipmate.vim'                        " 代码自动完成
-Plugin 'drmingdrmer/xptemplate'                       " 强大的代码片段自动补全
-Plugin 'godlygeek/tabular'                            " 必须在vim-markdow前加载
-Plugin 'plasticboy/vim-markdown'                      " 设置markdown语法高亮
+Plugin 'gmarik/Vundle.vim'                        " Vim插件管理包，必须
+Plugin 'altercation/vim-colors-solarized'         " Vim配色方案
+Plugin 'tomasr/molokai'                           " Vim配色方案
+Plugin 'scrooloose/nerdtree'                      " 左侧导航目录树
+Plugin 'majutsushi/tagbar'                        " 右侧标签目录树
+Plugin 'bling/vim-airline'                        " 用于配置美观的底部状态栏
+Plugin 'Yggdroot/indentLine'                      " 更加美观的显示缩进对齐线
+Plugin 'terryma/vim-multiple-cursors'             " Vim支持多重选取并编辑内容:Ctrl+n
+Plugin 'rking/ag.vim'                             " 内容搜索
+Plugin 'mileszs/ack.vim'                          " 内容搜索
+Plugin 'Raimondi/delimitMate'                     " 用于补全括号和引号
+Plugin 'anyakichi/vim-surround'                   " 用于快速切换括号/引号或者标签
+Plugin 'ShowTrailingWhitespace'                   " 用于高亮显示行尾空格
+Plugin 'tpope/vim-fugitive'                       " 将Git集成在Vim中
+Plugin 'airblade/vim-gitgutter'                   " 实时显示git更改
+Plugin 'gregsexton/gitv'                          " 查看Git详细提交日志(类似gitk)
+Plugin 'tpope/vim-commentary'                     " Vim批量注释工具, 可以注释多行和去除多行注释
+Plugin 'mattn/emmet-vim'                          " 用于更加方便的编辑html和css代码
+Plugin 'kien/ctrlp.vim'                           " 文件快速搜索插件
+Plugin 'dyng/ctrlsf.vim'                          " 仿Sublime的全局搜索插件
+Plugin 'Valloric/YouCompleteMe'                   " 代码自动补全
+Plugin 'msanders/snipmate.vim'                    " 代码自动完成
+Plugin 'drmingdrmer/xptemplate'                   " 强大的代码片段自动补全
+Plugin 'godlygeek/tabular'                        " 必须在vim-markdow前加载
+Plugin 'plasticboy/vim-markdown'                  " 设置markdown语法高亮
 Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'scrooloose/syntastic'                         " 语法检查
-Plugin 'stephpy/vim-php-cs-fixer'                     " 支持PSR的PHP代码格式化插件
-Plugin 'edsono/vim-matchit'                           " 匹配成对的标签，跳转
-Plugin 'easymotion/vim-easymotion'                    " 跳转到光标后任意位置
-Plugin 'sjl/gundo.vim'                                " 编辑文件时光机
+Plugin 'scrooloose/syntastic'                     " 语法检查
+Plugin 'stephpy/vim-php-cs-fixer'                 " 支持PSR的PHP代码格式化插件
+Plugin 'edsono/vim-matchit'                       " 匹配成对的标签，跳转
+Plugin 'easymotion/vim-easymotion'                " 跳转到光标后任意位置
+Plugin 'sjl/gundo.vim'                            " 编辑文件时光机
 Plugin 'leshill/vim-json'
 Plugin 'mattn/webapi-vim'
-Plugin 'mattn/Gist-vim'                               " Gist代码片段管理
+Plugin 'mattn/Gist-vim'                           " Gist代码片段管理
+Plugin 'jwalton512/vim-blade'                     " Laravel blade 模板支持
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -688,6 +690,18 @@ let g:vim_json_syntax_conceal = 1
 " vim-markdown 配置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:vim_markdown_folding_disabled = 1
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-blade 配置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Define some single Blade directives. This variable is used for highlighting only.
+let g:blade_custom_directives = ['datetime', 'javascript']
+" Define pairs of Blade directives. This variable is used for highlighting and indentation.
+let g:blade_custom_directives_pairs = {
+  \   'markdown': 'endmarkdown',
+  \   'cache': 'endcache',
+  \ }
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
