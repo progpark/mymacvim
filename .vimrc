@@ -15,14 +15,15 @@
 " F12 ：快速向右切换buffer，并在当前窗口打开buffer             " Shift + r            刷新nerdtree目录树                       |
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                     Ctags 使用说明                           "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 1)、在项目根目录执行命令生成标签库：ctags -R *               "
-" 2)、从项目根目录打开要编辑的文件                             "
-" 3)、Ctrl + ] 查找函数主题（光标至于函数名称处）              "
-"     Ctrl + t 返回查找处                                      "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                 Ctags 使用说明                          |
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 1)、在项目根目录执行命令生成标签库：ctags [--languages=php] -R *        |
+" 2)、从项目根目录打开要编辑的文件                                        |
+" 3)、Ctrl + ] 查找函数主题（光标至于函数名称处）                         |
+"     Ctrl + t 返回查找处                                                 |
+" 4)、ctags 标签库与ycm及gitv有冲突，需增加vim对ruby、lua等脚本的支持     |
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
@@ -42,9 +43,10 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'                            " Vim插件管理包，必须
-Plugin 'altercation/vim-colors-solarized'             " Vim配色方案
-Plugin 'tomasr/molokai'                               " Vim配色方案
+" Plugin 'altercation/vim-colors-solarized'             " Vim配色方案
+" Plugin 'tomasr/molokai'                               " Vim配色方案
 Plugin 'scrooloose/nerdtree'                          " 左侧导航目录树
+Plugin 'vim-php/tagbar-phpctags.vim'                  " 提供比原ctags更好的PHP语法大纲支持
 Plugin 'majutsushi/tagbar'                            " 右侧标签目录树
 Plugin 'bling/vim-airline'                            " 用于配置美观的底部状态栏
 Plugin 'Yggdroot/indentLine'                          " 更加美观的显示缩进对齐线
@@ -75,6 +77,7 @@ Plugin 'sjl/gundo.vim'                                " 编辑文件时光机
 Plugin 'leshill/vim-json'
 Plugin 'mattn/webapi-vim'
 Plugin 'mattn/Gist-vim'                               " Gist代码片段管理
+Plugin 'jwalton512/vim-blade'                         " Laravel blade 模板支持
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -131,7 +134,7 @@ colorscheme desert
 " colorscheme solarized
 " colorscheme molokai
 " 当光标所在行移动到文件顶部或者底部的时候，保持5行距离
-set scrolloff=5
+set scrolloff=3
 " Turn on Wild menu 增强模式中的命令行自动完成操作
 set wildmenu
 " The commandbar height 总是显示状态行
@@ -458,8 +461,9 @@ au BufRead,BufNewFile ~/buffer iab <buffer> xh1 ================================
 map <leader>pp :setlocal paste!<cr>
 map <leader>bb :cd ..<cr>
 
+" 可以用鼠标滑动定位
+set mouse=a
 " 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
-"set mouse=a
 "set selection=exclusive " 可选值 inclusive exclusive
 "set selectmode=mouse,key
 
@@ -479,7 +483,7 @@ map <F3> :NERDTreeToggle<CR>
 " 设置NERDTree子窗口位置
 let NERDTreeWinPos="left"
 " 设置目录树的宽度
-let NERDTreeWinSize = 25
+let NERDTreeWinSize = 32
 " 显示隐藏文件
 let NERDTreeShowHidden=1
 " 删除文件时自动删除文件对应 buffer
@@ -489,13 +493,27 @@ let NERDTreeAutoDeleteBuffer=1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Tagbar 配置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 配置ctags的位置
+let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+" 配置phpctags的位置
+let g:tagbar_phpctags_bin='phpctags'
+" 配置phpctags可以使用的内存量
+let g:tagbar_phpctags_memory_limit = '512M'
 " Tagbar 打开标签栏
 nmap <F4> :TagbarToggle<CR>
 " 设置标签栏的宽度
-let g:tagbar_width=25
+let g:tagbar_width=32
 let g:Tb_MaxSize = 2
-" 设置 tagbar 子窗口的位置出现在主编辑区的左边
+" 设置 tagbar 子窗口的位置出现在主编辑区的右边
 let g:tagbar_compact=1
+" 开启自动预览(随着光标在标签上的移动，顶部会出现一个实时的预览窗口)
+" let g:tagbar_autopreview = 1
+" 启动时自动focus
+let g:tagbar_autofocus = 1
+" 关闭排序,即按标签本身在文件中的位置排序
+" let g:tagbar_sort = 0
+" 在某些情况下自动打开tagbar
+autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
