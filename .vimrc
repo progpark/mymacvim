@@ -483,37 +483,39 @@ map <F3> :NERDTreeToggle<CR>
 " 设置NERDTree子窗口位置
 let NERDTreeWinPos="left"
 " 设置目录树的宽度
-let NERDTreeWinSize = 32
+let NERDTreeWinSize = 35
 " 显示隐藏文件
 let NERDTreeShowHidden=1
+" 隐藏指定文件
+let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules']
 " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
+" 去掉第一行的帮助信息
+" let NERDTreeMinimalUI=1
+" 当前目录的设定
+let NERDTreeChDirMode=2
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Tagbar 配置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 设置tagbar同NERDTree在同一竖栏
+let g:tagbar_vertical = 15
 " 配置ctags的位置
 let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 " 配置phpctags的位置
 let g:tagbar_phpctags_bin='phpctags'
 " 配置phpctags可以使用的内存量
 let g:tagbar_phpctags_memory_limit = '512M'
-" Tagbar 打开标签栏
-nmap <F4> :TagbarToggle<CR>
 " 设置标签栏的宽度
-let g:tagbar_width=32
+let g:tagbar_width=35
 let g:Tb_MaxSize = 2
-" 设置 tagbar 子窗口的位置出现在主编辑区的右边
+" 去掉第一行的帮助信息
 let g:tagbar_compact=1
-" 开启自动预览(随着光标在标签上的移动，顶部会出现一个实时的预览窗口)
-" let g:tagbar_autopreview = 1
-" 启动时自动focus
-let g:tagbar_autofocus = 1
-" 关闭排序,即按标签本身在文件中的位置排序
-" let g:tagbar_sort = 0
-" 在某些情况下自动打开tagbar
-autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen()
+" 打开vim时自动打开
+autocmd VimEnter * nested :TagbarOpen
+" Tagbar 打开/关闭标签栏
+nmap <F4> :TagbarToggle<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
