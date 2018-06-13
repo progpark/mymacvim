@@ -53,3 +53,8 @@
 * Plugin 'dyng/ctrlsf.vim'
 * Plugin 'msanders/snipmate.vim'
 * Plugin 'ekalinin/Dockerfile.vim'
+
+### 新增tagbar对phpctags支持，展示信息更加友好
+    - 首先需要安装phpctags，并给予可执行权限，且放到合适的位置
+        `curl -Ss http://vim-php.com/phpctags/install/phpctags.phar > phpctags`
+    - 其次引入并tagbar-phpctags.vim插件，具体参见.vimrc文件配置
