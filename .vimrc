@@ -318,11 +318,8 @@ map <silent> <leader><cr> :noh<cr>
 map <F11> :bp<CR>
 " 绑定F12，快速向右切换buffer
 map <F12> :bn<CR>
-" Close the current buffer
-map <leader>bd :Bclose<cr>
-" Close all the buffers
-map <leader>ba :1,300 bd!<cr>
 
+" Close the current buffer
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
     let l:currentBufNum = bufnr("%")
@@ -341,6 +338,21 @@ function! <SID>BufcloseCloseIt()
     if buflisted(l:currentBufNum)
         execute("bdelete! ".l:currentBufNum)
     endif
+endfunction
+
+" Close all other buffers
+command! BcloseOthers call <SID>BufCloseOthers()
+function! <SID>BufCloseOthers()
+    let l:currentBufNum = bufnr("%")
+    let l:alternateBufNum = bufnr("#")
+
+    for i in range(1, bufnr("$"))
+        if buflisted(i)
+            if i != l:currentBufNum
+                execute("bdelete ".i)
+            endif
+        endif
+    endfor
 endfunction
 
 " Tab configuration
