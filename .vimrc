@@ -512,8 +512,14 @@ let g:tagbar_width=35
 let g:Tb_MaxSize = 2
 " 去掉第一行的帮助信息
 let g:tagbar_compact=1
-" 打开vim时自动打开
-autocmd VimEnter * nested :TagbarOpen
+" 启动时自动focus
+" let g:tagbar_autofocus=1
+" 启动vim且已经打开NERDTree的情况下，自动打开tagbar
+" autocmd vimenter * nested if exists("b:NERDTree") | :TagbarOpen | endif
+" 启动vim时若未选中文件，则自动打开tagbar
+if !argc()
+    autocmd vimenter * nested :TagbarOpen
+endif
 " Tagbar 打开/关闭标签栏
 nmap <F4> :TagbarToggle<CR>
 
