@@ -134,7 +134,7 @@ colorscheme desert
 " colorscheme solarized
 " colorscheme molokai
 " 当光标所在行移动到文件顶部或者底部的时候，保持5行距离
-set scrolloff=3
+set scrolloff=1
 " Turn on Wild menu 增强模式中的命令行自动完成操作
 set wildmenu
 " The commandbar height 总是显示状态行
@@ -499,13 +499,15 @@ let NERDTreeWinSize = 35
 " 显示隐藏文件
 let NERDTreeShowHidden=1
 " 隐藏指定文件
-let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules']
+let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules', '\.git$', '\.svn$', '\.cvs$', '\.idea$', '\.hg$']
 " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
 " 去掉第一行的帮助信息
 " let NERDTreeMinimalUI=1
 " 当前目录的设定
 let NERDTreeChDirMode=2
+" 指定鼠标模式（1.双击打开；2.单目录双文件；3.单击打开）
+let NERDTreeMouseMode=3
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
