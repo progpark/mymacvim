@@ -507,7 +507,7 @@ let NERDTreeAutoDeleteBuffer=1
 " 当前目录的设定
 let NERDTreeChDirMode=2
 " 指定鼠标模式（1.双击打开；2.单目录双文件；3.单击打开）
-let NERDTreeMouseMode=3
+let NERDTreeMouseMode=2
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
