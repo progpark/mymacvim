@@ -43,10 +43,10 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'                            " Vim插件管理包，必须
-" Plugin 'altercation/vim-colors-solarized'             " Vim配色方案
-" Plugin 'tomasr/molokai'                               " Vim配色方案
-Plugin 'scrooloose/nerdtree'                          " 左侧导航目录树
+Plugin 'scrooloose/nerdtree'                          " 导航目录树
+Plugin 'Xuyuanp/nerdtree-git-plugin'                  " 目录的GIT状态插件
 Plugin 'vim-php/tagbar-phpctags.vim'                  " 提供比原ctags更好的PHP语法大纲支持
+Plugin 'jwalton512/vim-blade'                         " PHP Laravel blade 模板支持
 Plugin 'majutsushi/tagbar'                            " 右侧标签目录树
 Plugin 'bling/vim-airline'                            " 用于配置美观的底部状态栏
 Plugin 'Yggdroot/indentLine'                          " 更加美观的显示缩进对齐线
@@ -65,19 +65,16 @@ Plugin 'kien/ctrlp.vim'                               " 文件快速搜索插件
 Plugin 'dyng/ctrlsf.vim'                              " 仿Sublime的全局搜索插件
 Plugin 'Valloric/YouCompleteMe'                       " 代码自动补全
 Plugin 'msanders/snipmate.vim'                        " 代码自动完成
-" Plugin 'drmingdrmer/xptemplate'                       " 强大的代码片段自动补全
 Plugin 'godlygeek/tabular'                            " 必须在vim-markdow前加载
 Plugin 'plasticboy/vim-markdown'                      " 设置markdown语法高亮
 Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'scrooloose/syntastic'                     " 语法检查
-Plugin 'stephpy/vim-php-cs-fixer'                 " 支持PSR的PHP代码格式化插件
-Plugin 'edsono/vim-matchit'                       " 匹配成对的标签，跳转
-Plugin 'easymotion/vim-easymotion'                " 跳转到光标后任意位置
+Plugin 'scrooloose/syntastic'                         " 语法检查
+Plugin 'stephpy/vim-php-cs-fixer'                     " 支持PSR的PHP代码格式化插件
+Plugin 'edsono/vim-matchit'                           " 匹配成对的标签，跳转
+Plugin 'easymotion/vim-easymotion'                    " 跳转到光标后任意位置
 Plugin 'leshill/vim-json'
-" Plugin 'sjl/gundo.vim'                            " 编辑文件时光机
-" Plugin 'mattn/webapi-vim'
-" Plugin 'mattn/Gist-vim'                           " Gist代码片段管理
-Plugin 'jwalton512/vim-blade'                     " Laravel blade 模板支持
+Plugin 'fatih/vim-go'                                 " go语言插件
+Plugin 'buoto/gotests-vim'                            " 自动生成gotest代码
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -99,6 +96,7 @@ filetype plugin indent on
 set shortmess=atI
 " 语言设置
 set langmenu=zh_CN.UTF-8
+set encoding=UTF-8
 " 帮助文件使用中文
 set helplang=cn
 " 禁用折叠
@@ -117,6 +115,8 @@ set history=10000
 set autoread
 " 突出显示当前所在位置
 set ruler
+" 自动识别文件格式
+set modeline
 
 " When vimrc is edited, reload it
 autocmd! bufwritepost vimrc source ~/.vimrc
@@ -141,16 +141,13 @@ set wildmenu
 set cmdheight=2
 " 可以在没有保存的情况下切换buffer
 set hid
-" 使回格键（backspace）正常处理indent, eol, start等
-set backspace=2
-" 允许backspace和光标键跨越行边界
-set whichwrap+=<,>,h,l
 " 搜索忽略大小写
 set ignorecase
 " 搜索模式包含大写字符时不使用'ignorecase' 选项。只有在输入搜索模式并且打开'ignorecase' 选项时才会使用
 set smartcase
 " 搜索逐字符高亮
 set hlsearch
+" 边输边搜，即时更新搜索结果
 set incsearch
 " 不重绘而执行宏 Don't redraw while executing macros
 set nolazyredraw
@@ -167,6 +164,10 @@ set t_vb=
 set tm=500
 " 不要使用vi的键盘模式，而是vim自己的
 set nocompatible
+" 使回格键（backspace）正常处理indent, eol, start等
+set backspace=2
+" 允许backspace和光标键跨越行边界
+set whichwrap+=<,>,h,l
 " 在处理未保存或只读文件的时候，弹出确认
 set confirm
 
@@ -211,10 +212,10 @@ set textwidth=500
 set iskeyword+=_,$,@,%,#,-
 " 插入模式里: 插入 <Tab> 时使用合适数量的空格
 set expandtab
-" 在行和段开始处使用制表符
-set smarttab
 " 设置自动缩进为4个空格
 set shiftwidth=4
+" 在行和段开始处使用制表符
+set smarttab
 " 设置制表符(tab键)的宽度为4个空格
 set tabstop=4
 " 将tab替换为空格
@@ -514,13 +515,13 @@ let NERDTreeMouseMode=2
 " => Tagbar 配置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 设置tagbar同NERDTree在同一竖栏
-let g:tagbar_vertical = 15
+" let g:tagbar_vertical = 15
 " 配置ctags的位置
 let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 " 配置phpctags的位置
 let g:tagbar_phpctags_bin='phpctags'
 " 配置phpctags可以使用的内存量
-let g:tagbar_phpctags_memory_limit = '512M'
+let g:tagbar_phpctags_memory_limit = '128M'
 " 设置标签栏的宽度
 let g:tagbar_width=35
 let g:Tb_MaxSize = 2
@@ -589,13 +590,6 @@ map <F6> :GitGutterToggle<CR>
 " gcu 可以撤销注释
 autocmd FileType python,shell,php set commentstring=#\ %s
 autocmd FileType mako set cms=##\ %s
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" molokai
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:molokai_original = 1
-let g:rehash256 = 1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -714,8 +708,8 @@ let g:ycm_min_num_of_chars_for_completion = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " snipmate 配置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:snips_owner = "(c) MainPHP"
-let g:snips_author = "yedonghai <yedonghai@mainphp.com>"
+let g:snips_owner = "(c) ZuoYeBang"
+let g:snips_author = "yedonghai <yedonghai@zuoyebang.com>"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -740,6 +734,17 @@ let g:blade_custom_directives_pairs = {
   \   'markdown': 'endmarkdown',
   \   'cache': 'endcache',
   \ }
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-go 配置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
