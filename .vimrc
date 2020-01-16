@@ -401,6 +401,7 @@ autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.php :call DeleteTrailingWS()
 autocmd BufWrite *.js :call DeleteTrailingWS()
 autocmd BufWrite *.html :call DeleteTrailingWS()
+autocmd BufWrite *.go :call DeleteTrailingWS()
 
 set guitablabel=%t
 
@@ -737,7 +738,7 @@ let g:blade_custom_directives_pairs = {
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-go 配置
+" vim-go 配置,支持语法高亮
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
