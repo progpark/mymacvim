@@ -709,8 +709,8 @@ let g:ycm_min_num_of_chars_for_completion = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " snipmate 配置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:snips_owner = "(c) ZuoYeBang"
-let g:snips_author = "yedonghai <yedonghai@zuoyebang.com>"
+let g:snips_owner = "(c) progpark"
+let g:snips_author = "progpark <progpark@progpark.com>"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
